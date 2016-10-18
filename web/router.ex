@@ -14,9 +14,14 @@ defmodule Rumbl.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/manage", Rumbl do
+    pipe_through [:browser, :authenticate_user]
+    resources "/videos", VideoController
+  end
+
   scope "/", Rumbl do
     pipe_through :browser # Use the default browser stack
-    
+
     get "/", PageController, :index
     resources("/users", UserController, only: [:index, :show, :new, :create])
     resources("/sessions", SessionController, only: [:new, :create, :delete])
