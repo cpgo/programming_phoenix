@@ -12,10 +12,12 @@
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
+import Player from "./player"
 
-// Import local files
-//
-// Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
+let video = document.getElementById("video")
 
-// import socket from "./socket"
+if (video) {
+  Player.init(video.id, video.getAttribute("data-player-id"), () => {
+    console.log("player ready")
+  })
+}
