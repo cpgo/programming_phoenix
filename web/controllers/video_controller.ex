@@ -5,11 +5,16 @@ defmodule Rumbl.VideoController do
   alias Rumbl.Category
 
   def action(conn, _) do
-    apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
+    apply(__MODULE__, action_name(conn),
+    [conn, conn.params, conn.assigns.current_user])
   end
 
   def index(conn, _params, user) do
-    videos = Repo.all(user_videos(user)) |> Repo.preload(:category)
+    videos =
+      user
+      |> user_videos
+      |> Repo.all
+      |> Repo.preload(:category)
     render(conn, "index.html", videos: videos)
   end
 
@@ -38,7 +43,11 @@ defmodule Rumbl.VideoController do
   end
 
   def show(conn, %{"id" => id}, user) do
-    video = Repo.get!(user_videos(user), id) |> Repo.preload(:category)
+    video =
+      user
+      |> user_videos
+      |> Repo.get!(id)
+      |> Repo.preload(:category)
     render(conn, "show.html", video: video)
   end
 
